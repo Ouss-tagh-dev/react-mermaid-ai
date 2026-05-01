@@ -1,5 +1,11 @@
 # 🌊 React Mermaid AI
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Groq](https://img.shields.io/badge/AI-Groq-orange)](https://groq.com/)
+
+
 React Mermaid AI is a premium, AI-powered visual diagramming mini-SaaS. Built for software architects, developers, and product managers, it allows you to instantly generate, edit, and export high-definition Mermaid.js diagrams (Flowcharts, Sequence Diagrams, Gantt charts, etc.) using natural language prompts.
 
 Powered by React, Vite, and the blazing-fast Groq API (`llama-3.3-70b-versatile`), this tool features a self-healing syntax correction loop to ensure your AI-generated diagrams are always 100% syntactically valid.
@@ -24,7 +30,7 @@ Powered by React, Vite, and the blazing-fast Groq API (`llama-3.3-70b-versatile`
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/react-mermaid-ai.git
+   git clone https://github.com/Ouss-tagh-dev/react-mermaid-ai.git
    cd react-mermaid-ai
    ```
 
@@ -89,4 +95,4 @@ We welcome contributions! If you'd like to help improve React Mermaid AI, please
 Copyright (c) 2026 **Oussama Taghlaoui**. All rights reserved.
 Portfolio: [https://oussama.taghlaoui.com/](https://oussama.taghlaoui.com/)
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](LICENSE).

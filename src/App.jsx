@@ -472,7 +472,12 @@ function App() {
       </main>
       
       <footer className="footer">
-        <p>© 2026 Oussama Taghlaoui. All rights reserved. <a href="https://oussama.taghlaoui.com/" target="_blank" rel="noopener noreferrer">Portfolio</a></p>
+        <p>
+          © 2026 Oussama Taghlaoui. All rights reserved. 
+          <a href="https://oussama.taghlaoui.com/" target="_blank" rel="noopener noreferrer">Portfolio</a>
+          <span style={{ margin: '0 0.5rem', opacity: 0.5 }}>|</span>
+          <a href="https://github.com/Ouss-tagh-dev/react-mermaid-ai" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+        </p>
       </footer>
     </div>
   );
