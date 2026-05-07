@@ -1,8 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const GROQ_MODEL = import.meta.env.VITE_GROQ_MODEL || 'llama-3.3-70b-versatile';
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+
+// Available Groq models
+export const AVAILABLE_MODELS = [
+  { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B (Recommended)" },
+  { id: "llama-3.1-405b-reasoning", name: "Llama 3.1 405B Reasoning" },
+  { id: "llama-3.1-70b-versatile", name: "Llama 3.1 70B" },
+  { id: "llama-3.1-8b-instant", name: "Llama 3.1 8B" },
+  { id: "mixtral-8x7b-32768", name: "Mixtral 8x7B" },
+  { id: "gemma-7b-it", name: "Gemma 7B" },
+];
 
 const SYSTEM_PROMPT = `You are an expert software architect and Mermaid.js specialist. Your task is to generate ONLY valid Mermaid code based on natural language descriptions.
 
@@ -26,43 +34,66 @@ classDiagram
     }
 \`\`\``;
 
+// Get API key and model from environment or user settings
+function getApiConfig() {
+  const storedConfig = localStorage.getItem("groq-config");
+
+  if (storedConfig) {
+    try {
+      return JSON.parse(storedConfig);
+    } catch (e) {
+      console.warn("Failed to parse stored Groq config");
+    }
+  }
+
+  // Fallback to environment variables
+  return {
+    apiKey: import.meta.env.VITE_GROQ_API_KEY || null,
+    model: import.meta.env.VITE_GROQ_MODEL || "llama-3.3-70b-versatile",
+  };
+}
+
 export async function generateMermaidCode(userPrompt) {
-  if (!GROQ_API_KEY) {
-    throw new Error('Groq API Key is not configured. Please check your .env file.');
+  const config = getApiConfig();
+
+  if (!config.apiKey) {
+    throw new Error(
+      "Groq API Key is not configured. Please configure your API key in settings.",
+    );
   }
 
   try {
     const response = await axios.post(
       GROQ_API_URL,
       {
-        model: GROQ_MODEL,
+        model: config.model,
         messages: [
           {
-            role: 'system',
-            content: SYSTEM_PROMPT
+            role: "system",
+            content: SYSTEM_PROMPT,
           },
           {
-            role: 'user',
-            content: `Generate a high-quality, professional Mermaid diagram for the following: ${userPrompt}`
-          }
+            role: "user",
+            content: `Generate a high-quality, professional Mermaid diagram for the following: ${userPrompt}`,
+          },
         ],
         temperature: 0.7,
         max_tokens: 2000,
         top_p: 1,
-        stream: false
+        stream: false,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`
-        }
-      }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      },
     );
 
     const content = response.data.choices[0]?.message?.content;
 
     if (!content) {
-      throw new Error('Empty response received from AI model.');
+      throw new Error("Empty response received from AI model.");
     }
 
     // Extract Mermaid code
@@ -70,33 +101,38 @@ export async function generateMermaidCode(userPrompt) {
     if (mermaidMatch && mermaidMatch[1]) {
       return mermaidMatch[1].trim();
     }
-    
+
     // Fallback if no tags
     return content.trim();
-
   } catch (error) {
-    console.error('Groq Generation Error:', error);
-    throw new Error(error.response?.data?.error?.message || error.message || 'Groq API Error');
+    console.error("Groq Generation Error:", error);
+    throw new Error(
+      error.response?.data?.error?.message || error.message || "Groq API Error",
+    );
   }
 }
 
 export async function fixMermaidCode(brokenCode, errorMessage) {
-  if (!GROQ_API_KEY) {
-    throw new Error('Groq API Key is not configured. Please check your .env file.');
+  const config = getApiConfig();
+
+  if (!config.apiKey) {
+    throw new Error(
+      "Groq API Key is not configured. Please configure your API key in settings.",
+    );
   }
 
   try {
     const response = await axios.post(
       GROQ_API_URL,
       {
-        model: GROQ_MODEL,
+        model: config.model,
         messages: [
           {
-            role: 'system',
-            content: SYSTEM_PROMPT
+            role: "system",
+            content: SYSTEM_PROMPT,
           },
           {
-            role: 'user',
+            role: "user",
             content: `The following Mermaid code produced a syntax error during rendering.
 Mermaid Code:
 \`\`\`mermaid
@@ -106,37 +142,56 @@ ${brokenCode}
 Compiler Error Message:
 ${errorMessage}
 
-Please analyze the error, fix the syntax issue, and return ONLY the corrected Mermaid code enclosed in \`\`\`mermaid and \`\`\`. Do not include any other text.`
-          }
+Please analyze the error, fix the syntax issue, and return ONLY the corrected Mermaid code enclosed in \`\`\`mermaid and \`\`\`. Do not include any other text.`,
+          },
         ],
         temperature: 0.3, // Lower temperature for bug fixing
         max_tokens: 2000,
         top_p: 1,
-        stream: false
+        stream: false,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`
-        }
-      }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      },
     );
 
     const content = response.data.choices[0]?.message?.content;
 
     if (!content) {
-      throw new Error('Empty response received from AI model during correction.');
+      throw new Error(
+        "Empty response received from AI model during correction.",
+      );
     }
 
     const mermaidMatch = content.match(/```mermaid\n?([\s\S]*?)```/);
     if (mermaidMatch && mermaidMatch[1]) {
       return mermaidMatch[1].trim();
     }
-    
-    return content.trim();
 
+    return content.trim();
   } catch (error) {
-    console.error('Groq Correction Error:', error);
-    throw new Error(error.response?.data?.error?.message || error.message || 'Groq API Error during correction');
+    console.error("Groq Correction Error:", error);
+    throw new Error(
+      error.response?.data?.error?.message ||
+        error.message ||
+        "Groq API Error during correction",
+    );
   }
+}
+
+// Configuration management
+export function saveGroqConfig(apiKey, model) {
+  const config = { apiKey, model };
+  localStorage.setItem("groq-config", JSON.stringify(config));
+}
+
+export function getGroqConfig() {
+  return getApiConfig();
+}
+
+export function clearGroqConfig() {
+  localStorage.removeItem("groq-config");
 }

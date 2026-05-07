@@ -1,0 +1,14 @@
+# Netlify Configuration for React Mermaid AI
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Environment variables can be set in the Netlify dashboard
+# VITE_GROQ_API_KEY - Optional: Your Groq API key (users can also set this in the app)
+# VITE_GROQ_MODEL - Optional: Default Groq model (default: llama-3.3-70b-versatile)
