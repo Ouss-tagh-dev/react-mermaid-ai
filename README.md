@@ -18,6 +18,25 @@ Powered by React, Vite, and the blazing-fast Groq API (`llama-3.3-70b-versatile`
 - **📸 Ultra-HD Export**: Export your diagrams in crisp, high-resolution SVG, PNG, JPG, or WEBP (5x scale rendering).
 - **🕹️ Interactive Canvas**: Zoom, pan, and explore large diagrams effortlessly.
 
+## 🌐 Live Demo
+
+Try the app now: **[https://react-mermaid-ai.netlify.app/](https://react-mermaid-ai.netlify.app/)**
+
+### How to Use Online
+
+1. **Visit the app**: Go to [https://react-mermaid-ai.netlify.app/](https://react-mermaid-ai.netlify.app/)
+2. **Add your Groq API key**:
+   - Click the **⚙️ Settings** icon in the top-right corner
+   - Enter your [Groq API key](https://console.groq.com/) in the "API Key" field
+   - (Optional) Select your preferred AI model
+   - Click **Save**
+3. **Start creating diagrams**:
+   - Describe your diagram in natural language (e.g., "Create a flowchart for a user login flow")
+   - Click **Generate** and watch AI create your diagram instantly
+   - Edit, refine, and export your diagrams in multiple formats (SVG, PNG, JPG, WEBP)
+
+**Note**: Your API key is stored securely in your browser's localStorage and never sent to any server.
+
 ## 🚀 Getting Started Locally
 
 ### Prerequisites
