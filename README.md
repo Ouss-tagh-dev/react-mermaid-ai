@@ -74,41 +74,6 @@ Try the app now: **[https://react-mermaid-ai.netlify.app/](https://react-mermaid
    ```
    The application will be available at `http://localhost:5173`.
 
-## 🚀 Deployment on Netlify
-
-React Mermaid AI is fully configured for deployment on Netlify. The project includes a `netlify.toml` configuration file.
-
-### Quick Setup
-
-1. **Connect your GitHub repository to Netlify**
-   - Go to [Netlify](https://www.netlify.com/)
-   - Click "New site from Git"
-   - Connect your GitHub account and select your forked repository
-
-2. **Configure Environment Variables (Optional)**
-   - In the Netlify dashboard, go to **Site settings** → **Build & deploy** → **Environment**
-   - Add your Groq API key as an environment variable:
-     ```
-     VITE_GROQ_API_KEY=your_api_key_here
-     VITE_GROQ_MODEL=llama-3.3-70b-versatile
-     ```
-   - **Note**: These are optional. Users can configure their own API key directly in the application's Settings UI.
-
-3. **Deploy**
-   - Netlify will automatically trigger a build and deploy your site
-   - Your app will be live at your custom Netlify URL
-
-### User Configuration (No API Key Required)
-
-Users can run the app **without an environment variable**. When they open the application, they can:
-
-1. Click the **Settings** icon (⚙️) in the header
-2. Enter their own Groq API key
-3. Select their preferred AI model
-4. Save the configuration (stored securely in browser's localStorage)
-
-This allows users to bring their own API keys and use the tool without needing server-side secrets.
-
 ## 🤝 How to Collaborate
 
 We welcome contributions! If you'd like to help improve React Mermaid AI, please follow these steps:
